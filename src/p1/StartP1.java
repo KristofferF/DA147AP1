@@ -14,7 +14,8 @@ public class StartP1 {
 		String res="";
 		Library library = new Library(100); // Max 100 böcker kan lagras
 		for (int i =0; i < 100; i++){
-			library.add(new Book("book", "author", Integer.toString(i)));
+			library.add(new Book("book", "author", Integer.toString(i+1)));
+			System.out.println(i);
 		}
 		
 		res += "Antal lagrade böcker: " + library.size();
@@ -30,7 +31,7 @@ public class StartP1 {
 			}
 		}
 		
-		res += books[99].toString();
+		//res += books[99].toString();
 		
 		javax.swing.JOptionPane.showMessageDialog(null, res);
 	}
