@@ -4,6 +4,7 @@ public class Library {
 	private Book[] mBooks;
 	private int mSize = 0;
 	private int mCapacity;
+	private boolean mFull = false;
 
 	/**
 	 * Constructor for the library. Sets up the new array to store books in.
@@ -18,17 +19,21 @@ public class Library {
 	}
 
 	/**
-	 * Add books to the library array. Increment mSize up to the value of mCapacity.
+	 * Add books to the library array. Increment mSize up to the value of mCapacity. 
+	 * When adding the last book the library becomes full and the boolean value of mFull changes.
 	 * 
 	 * @param book The Book to be added to the library
 	 */
 	public void add(Book book) {
-		if (mSize <= mCapacity) {
+		if (mSize < mCapacity) {
 			mBooks[mSize] = book;
-			if (mSize < (mCapacity)) {
-				mSize++;
-			}
-			//sortLibrary();
+			mSize++;
+			sortLibrary();
+		}
+		else if(mSize == mCapacity && (!mFull)){
+			mBooks[mSize] = book;
+			mFull = true;
+			sortLibrary();
 		}
 	}
 
@@ -61,13 +66,26 @@ public class Library {
 	}
 	
 	/**
-	 * Returns the size of the library array. The size of the array is mSize unless the library is full then its mSize+1;
+	 * Returns the size of the library array. The size of the array is mSize unless the library is full then its mSize+1.
 	 * @return the size of the library array
 	 */
 	public int size() {
-		if(mSize == mCapacity){
+		if(mFull){
 			return mSize+1;
 		}
 		return mSize;
+	}
+	
+	
+	/**
+	 * Returns the number of books in the library in a string.
+	 *
+	 * @return the string with the number of books.
+	 */
+	public String toString(){
+		if(mSize == 0){
+			return "Biblioteket är tomt";
+		}
+		return "Bibliotek med " + size() + " böcker";
 	}
 }

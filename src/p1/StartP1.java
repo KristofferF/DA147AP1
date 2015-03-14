@@ -10,29 +10,18 @@ public class StartP1 {
 //		Viewer viewer = new Viewer("Bokvisare");
 //		Controller controller = new Controller(library, viewer);
 //		Input input = new Input(controller);
-		
-		String res="";
-		Library library = new Library(100); // Max 100 böcker kan lagras
-		for (int i =0; i < 100; i++){
-			library.add(new Book("book", "author", Integer.toString(i+1)));
-			System.out.println(i);
+		Viewer viewer = new Viewer("Bokvisare");
+		Book b1 = new Book("En oväntad semester", "Keyes", "9176436314");
+		Book b2 = new Book("How to Program", "Deitel", "0131290142");
+		Book b3 = new Book("Testamentet", "Grisham", "9176437175");
+		Book b4 = new Book("Legionärerna", "Enquist", "9174483463");
+		viewer.clear();
+		viewer.addRow(b1.toString());
+		viewer.addRow(b2.toString());
+		viewer.addRow(b3.toString());
+		viewer.addRow(b4.toString());
+		for(int i = 0; i < 100; i ++){
+			viewer.addRow(b1.toString());
 		}
-		
-		res += "Antal lagrade böcker: " + library.size();
-		System.out.println(res);
-		res += "\n" + library.toString();
-		Book[] books = library.list();
-		res += "\nKapacitet på böcker: " + books.length + "\n";
-		System.out.println(res);
-		for(int i=0; i<books.length; i++){
-			res += books[i].toString() + "      ";
-			if (i%5 == 0 && i != 0){
-				res += "\n";
-			}
-		}
-		
-		//res += books[99].toString();
-		
-		javax.swing.JOptionPane.showMessageDialog(null, res);
 	}
 }
