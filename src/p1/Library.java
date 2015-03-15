@@ -28,12 +28,12 @@ public class Library {
 		if (mSize < mCapacity) {
 			mBooks[mSize] = book;
 			mSize++;
-			sortLibrary();
+			//sortLibrary();
 		}
 		else if(mSize == mCapacity && (!mFull)){
 			mBooks[mSize] = book;
 			mFull = true;
-			sortLibrary();
+			//sortLibrary();
 		}
 	}
 
