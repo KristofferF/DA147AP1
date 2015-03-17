@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * @author Stationary
- *
+ * Input class to handle the input window
+ * @author Kristoffer Freiholtz
+ * @version 1.0
  */
 public class Input extends JFrame {
 	private Controller mController;
@@ -30,7 +31,8 @@ public class Input extends JFrame {
 	private JTextField mIsbn;
 
 	/**
-	 * @param controller
+	 * The constructor of the input window. Adds the labels, textfields and buttons and set it visible
+	 * @param controller the controller to direct the inputs
 	 */
 	public Input(Controller controller) {
 		mController = controller;
@@ -52,7 +54,7 @@ public class Input extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Setup of the south panel and handling button actions
 	 */
 	private void setupSouthPanel() {
 		mAddButton = new JButton("Lägg Till Bok");
@@ -75,7 +77,7 @@ public class Input extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Setup of the west panel with the labels
 	 */
 	private void setupWestPanel() {
 		for (int i = 0; i < mLabels.length; i++) {
@@ -84,7 +86,7 @@ public class Input extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Setup of the East panel with the textfields
 	 */
 	private void setupEastPanel() {
 		mTitle = new JTextField();
@@ -96,7 +98,8 @@ public class Input extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Clear all textfields
+	 * Usually after a new book is submitted
 	 */
 	private void clearFields() {
 		mTitle.setText("");
@@ -104,6 +107,10 @@ public class Input extends JFrame {
 		mIsbn.setText("");
 	}
 
+	/**
+	 * Checks if all textfields are filled in other wise show an error message
+	 * if correctly filled it will submit the new book to the library
+	 */
 	private void handleInput() {
 		if (mTitle.getText().equals("") || mAuthor.getText().equals("") || mIsbn.getText().equals("")) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Du måste fylla i alla fälten.", "Fel på inmatning", JOptionPane.WARNING_MESSAGE);
@@ -112,14 +119,4 @@ public class Input extends JFrame {
 			clearFields();
 		}
 	}
-
-	private void showQuestionDialog() {
-		int selectedOption =
-				JOptionPane.showConfirmDialog(null, "Vill du verkligen ta bort hela biblioteket?\nDu kan inte ångra dig.", "Välj", JOptionPane.YES_NO_OPTION);
-		if (selectedOption == JOptionPane.YES_OPTION) {
-			mController.emptyLibrary();
-		}
-
-	}
-
 }
