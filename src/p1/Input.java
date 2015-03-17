@@ -9,48 +9,117 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Input extends JFrame{
-	private final String[] mLabels = {"Titel", "Fï¿½rfattare", "ISBN"};
-	private JTextField[] mTextFields = new JTextField[mLabels.length];
-	public Input() {
+/**
+ * @author Stationary
+ *
+ */
+public class Input extends JFrame {
+	private Controller mController;
+	private final String[] mLabels = { "Titel", "Författare", "ISBN" };
+	private JPanel mWestPanel;
+	private JPanel mEastPanel;
+	private JPanel mSouthPanel;
+	private JButton mAddButton;
+	private JButton mClearButton;
+	private JTextField mTitle;
+	private JTextField mAuthor;
+	private JTextField mIsbn;
+
+	/**
+	 * @param controller
+	 */
+	public Input(Controller controller) {
+		mController = controller;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(500,150));
-		JPanel westPanel = new JPanel(new GridLayout(mLabels.length,1));
-		JPanel eastPanel = new JPanel(new GridLayout(mLabels.length,1));
-		JPanel southPanel = new JPanel(new BorderLayout());
-		JButton addButton = new JButton("Lï¿½gg Till Bok");
-		
-		southPanel.add(addButton);
-		for (int i = 0; i < mLabels.length; i++){
-			JLabel label = new JLabel(mLabels[i]);
-			westPanel.add(label);
-			JTextField textField = new JTextField();
-			mTextFields[i] = textField;
-			label.setLabelFor(textField);		
-			eastPanel.add(textField, BorderLayout.WEST);	
-		}
-		addButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = "";
-				
-				for (int i = 0; i < mLabels.length; i++){
-					text += mTextFields[i].getText() + "\n";
-				}
-				System.out.println(text);
-			}
-		});
-		eastPanel.setOpaque(true);		
+		setPreferredSize(new Dimension(500, 150));
+		mWestPanel = new JPanel(new GridLayout(mLabels.length, 1));
+		mEastPanel = new JPanel(new GridLayout(mLabels.length, 1));
+		mSouthPanel = new JPanel(new GridLayout(2, 1));
+		setupWestPanel();
+		setupEastPanel();
+		setupSouthPanel();
 		setLayout(new BorderLayout());
-		add(westPanel, BorderLayout.WEST);
-		add(eastPanel, BorderLayout.CENTER);
-		add(southPanel, BorderLayout.SOUTH);
+		add(mWestPanel, BorderLayout.WEST);
+		add(mEastPanel, BorderLayout.CENTER);
+		add(mSouthPanel, BorderLayout.SOUTH);
 		setLocationRelativeTo(null);
 		pack();
 		setVisible(true);
 	}
-	
+
+	/**
+	 * 
+	 */
+	private void setupSouthPanel() {
+		mAddButton = new JButton("Lägg Till Bok");
+		mClearButton = new JButton("Töm biblioteket");
+		mSouthPanel.add(mAddButton);
+		mSouthPanel.add(mClearButton);
+		mAddButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				handleInput();
+			}
+		});
+		mClearButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mController.emptyLibrary();
+			}
+		});
+
+	}
+
+	/**
+	 * 
+	 */
+	private void setupWestPanel() {
+		for (int i = 0; i < mLabels.length; i++) {
+			mWestPanel.add(new JLabel(mLabels[i]));
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void setupEastPanel() {
+		mTitle = new JTextField();
+		mAuthor = new JTextField();
+		mIsbn = new JTextField();
+		mEastPanel.add(mTitle);
+		mEastPanel.add(mAuthor);
+		mEastPanel.add(mIsbn);
+	}
+
+	/**
+	 * 
+	 */
+	private void clearFields() {
+		mTitle.setText("");
+		mAuthor.setText("");
+		mIsbn.setText("");
+	}
+
+	private void handleInput() {
+		if (mTitle.getText().equals("") || mAuthor.getText().equals("") || mIsbn.getText().equals("")) {
+			javax.swing.JOptionPane.showMessageDialog(null, "Du måste fylla i alla fälten.", "Fel på inmatning", JOptionPane.WARNING_MESSAGE);
+		} else {
+			mController.newBook(mTitle.getText(), mAuthor.getText(), mIsbn.getText());
+			clearFields();
+		}
+	}
+
+	private void showQuestionDialog() {
+		int selectedOption =
+				JOptionPane.showConfirmDialog(null, "Vill du verkligen ta bort hela biblioteket?\nDu kan inte ångra dig.", "Välj", JOptionPane.YES_NO_OPTION);
+		if (selectedOption == JOptionPane.YES_OPTION) {
+			mController.emptyLibrary();
+		}
+
+	}
+
 }

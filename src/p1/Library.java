@@ -8,38 +8,41 @@ public class Library {
 
 	/**
 	 * Constructor for the library. Sets up the new array to store books in.
-	 * mCapacity is set to capacity-1 to make the remaining functions more readable.
-	 * Since mCapacity is now the highest value that mSize can increment to.
+	 * mCapacity is set to capacity-1 to make the remaining functions more
+	 * readable. Since mCapacity is now the highest value that mSize can
+	 * increment to.
 	 * 
-	 * @param capacity The number of Books that can be safely stored.
+	 * @param capacity
+	 *            The number of Books that can be safely stored.
 	 */
 	public Library(int capacity) {
 		mBooks = new Book[capacity];
-		mCapacity = capacity-1;
+		mCapacity = capacity - 1;
 	}
 
 	/**
-	 * Add books to the library array. Increment mSize up to the value of mCapacity. 
-	 * When adding the last book the library becomes full and the boolean value of mFull changes.
+	 * Add books to the library array. Increment mSize up to the value of
+	 * mCapacity. When adding the last book the library becomes full and the
+	 * boolean value of mFull changes.
 	 * 
-	 * @param book The Book to be added to the library
+	 * @param book
+	 *            The Book to be added to the library
 	 */
 	public void add(Book book) {
 		if (mSize < mCapacity) {
 			mBooks[mSize] = book;
 			mSize++;
-			//sortLibrary();
-		}
-		else if(mSize == mCapacity && (!mFull)){
+			sortLibrary();
+		} else if (mSize == mCapacity && (!mFull)) {
 			mBooks[mSize] = book;
 			mFull = true;
-			//sortLibrary();
+			sortLibrary();
 		}
 	}
 
-	
 	/**
-	 * Sorts the library according to the ISBN number, It uses the Book member function compareTo.
+	 * Sorts the library according to the ISBN number, It uses the Book member
+	 * function compareTo.
 	 */
 	private void sortLibrary() {
 		for (int i = 0; i < mSize; i++) {
@@ -53,39 +56,58 @@ public class Library {
 		}
 	}
 
-	/** 
+	/**
 	 * Returns the current stored books in an appropriate sized array.
 	 * 
 	 * @return The array of currently stored books
 	 */
 	public Book[] list() {
-		Book[] books;		
+		Book[] books;
 		books = new Book[size()];
-		System.arraycopy(mBooks, 0, books, 0, size());		
+		System.arraycopy(mBooks, 0, books, 0, size());
 		return books;
 	}
-	
+
 	/**
-	 * Returns the size of the library array. The size of the array is mSize unless the library is full then its mSize+1.
+	 * Returns the size of the library array. The size of the array is mSize
+	 * unless the library is full then its mSize+1.
+	 * 
 	 * @return the size of the library array
 	 */
 	public int size() {
-		if(mFull){
-			return mSize+1;
+		if (mFull) {
+			return mSize + 1;
 		}
 		return mSize;
 	}
-	
-	
+
 	/**
 	 * Returns the number of books in the library in a string.
 	 *
 	 * @return the string with the number of books.
 	 */
-	public String toString(){
-		if(mSize == 0){
+	public String toString() {
+		if (mSize == 0) {
 			return "Biblioteket är tomt";
 		}
 		return "Bibliotek med " + size() + " böcker";
+	}
+
+	public void emptyLibrary() {
+		mBooks = new Book[mCapacity + 1];
+		mSize = 0;
+		mFull = false;
+	}
+
+	public boolean isFull() {
+		return mFull;
+	}
+
+	public void doubleSize() {
+		Book[] temp = new Book[(mCapacity + 1)*2];
+		System.arraycopy(mBooks, 0, temp, 0, size());
+		mBooks = temp;
+		mCapacity = ((mCapacity + 1)*2)-1;
+		mFull = false;		
 	}
 }
